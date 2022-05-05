@@ -3,6 +3,7 @@ const ramenURL = 'http://localhost:3000/ramens'
 function createRamen(ramen) {
     const img = document.createElement('img')
     img.src = ramen.image
+    const rate = document.querySelector('#rating-display')
     img.addEventListener('click', () => {
         const deets = document.querySelector('#ramen-detail')
         console.log(deets)
@@ -13,11 +14,17 @@ function createRamen(ramen) {
         nameDeets.textContent = ramen.name
         const restDeets = document.querySelector("h3.restaurant")
         restDeets.textContent = ramen.restaurant
-        const rate = document.querySelector('#rating-display')
-        console.log(rate)
+        //const rate = document.querySelector('#rating-display')
+        //console.log(rate)
+        
         const input = document.createElement('input')
-        input.class = "rating"
-        rate.append(input)
+        input.className = "rate"
+        input.id = ramen.id
+        rate.appendChild(input)
+        
+        // if input element exist 
+        // take the new rating and Patch
+        // if element does not exist, create and patch
         input.addEventListener('change', (e) => {
             console.log(e)
             fetch(`${ramenURL}/${ramen.id}`, {
@@ -44,6 +51,20 @@ function renderData() {
         })
     }))
 }
+
+//working on this
+function rateRamen() {
+    fetch(`${ramenURL}/${ramen.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            rating: e.target.value
+        })
+    }).then(res => res.json()).then(data => console.log(data))}
+
 
 function addNewRamen() {
     const addNew = document.querySelector('#new-ramen')
